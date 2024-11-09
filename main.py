@@ -14,7 +14,7 @@ with open('web.html') as f:
     html = f.read()
     root = etree.fromstring(html, parser=etree.HTMLParser())
 
-selected_element = root.xpath('//*[@id="main_table"]/tbody/tr/td[2]/div[2]/a')
+selected_element = root.xpath('//*[@id="main_table"]/tbody/tr/td[2]/div[2]/a[contains(text(),"Read")]')
 selected_element_name = root.xpath(
     '//*[@id="main_table"]/tbody/tr/td[2]/strong')
 
