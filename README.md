@@ -22,7 +22,7 @@ Dump all PDFs from Nattee's grader
    ./script.sh
    ```
 
-5. **Enter Cookie Information**:
+5. **Enter Prompted Information**:
    - Copy the cookies from the grader website while logged in.
    - During setup, you’ll be prompted to provide the following information:
      - `_cafe_grader_session`: Your session cookie
@@ -30,16 +30,18 @@ Dump all PDFs from Nattee's grader
 
    ![Cookies Example](cookies.png)
 
+   - Enter your preferred name for the output directory.
+
    Enter these values when prompted. The script will store them in the `.env` file.
 
 6. **Output Location**:
-   - All files will be downloaded to the `data&algo` folder after the script is executed.
+   - All files will be downloaded to the folder with the name you entered after the script is executed. If you left that field blank, the files will be saved in the default folder, `Data Struct & Algorithm`.
 
 ## Notes
 
-- The cookies provided to this program are only valid for a short period of time. If you want to use the program again later, run `script.sh` and enter new cookies.
-- Ensure `web.html` is always the latest version downloaded from the grader site before running the script again.
+- The cookies provided to this program are only valid for a short period of time. If you want to use the program again later, try running `main.py` with `python3 main.py`. If it doesn’t work, update the cookies in `.env` or simply run `./script.sh` again and enter new cookies.
 
 ## Windows Users
 
 If you’re using Windows, you’ll need to figure out how to run this program on your own :)
+Hint: read `setup.sh`
