@@ -33,9 +33,13 @@ Dump all PDFs from Nattee's grader
    Enter these values when prompted. The script will store them in the `.env` file.
 
 6. **Output Location**:
-   - All files will be downloaded to the `data%algo` folder after the script is executed.
+   - All files will be downloaded to the `data&algo` folder after the script is executed.
 
 ## Notes
 
 - The cookies provided to this program are only valid for a short period of time. If you want to use the program again later, run `script.sh` and enter new cookies.
 - Ensure `web.html` is always the latest version downloaded from the grader site before running the script again.
+
+## Windows Users
+
+If you’re using Windows, you’ll need to figure out how to run this program on your own :)
