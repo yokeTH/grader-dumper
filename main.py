@@ -24,7 +24,16 @@ selected_element_name = root.xpath(
     '//*[@id="main_table"]/tbody/tr/td[2]/strong')
 
 for l, v in zip(selected_element, selected_element_name):
+    base_url = "https://grader.nattee.net"  # for CPs
     url = l.get('href')
+    
+    if not url:
+        print(f"Skipping {v.text.strip()}: URL is missing.")
+        continue
+
+    if not url.startswith(("http://", "https://")):
+        url = f"{base_url.rstrip('/')}/{url.lstrip('/')}"
+        
     name = v.text.strip()
 
     # save_path = f'{cedt'_'.join(name.split('_')[:2])}/{name}.pdf'
@@ -33,4 +42,7 @@ for l, v in zip(selected_element, selected_element_name):
     if not os.path.exists('/'.join(save_path.split('/')[:-1])):
         os.makedirs('/'.join(save_path.split('/')[:-1]))
 
-    downloader.download(url, cookies, save_path)
+    try:
+        downloader.download(url, cookies, save_path)
+    except Exception as e:
+        print(f"Failed to download {name} from {url}: {e}")
