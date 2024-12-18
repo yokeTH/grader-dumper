@@ -34,6 +34,7 @@ rows = root.xpath('//tr')
 for row in rows:
     read_link = row.xpath('.//a[contains(text(), "Read")]')
     problem_name = row.xpath('.//div[@class="text-muted font-monospace"]/text()')
+    attachment = row.xpath('.//a[contains(text(), "File")]')
     
     if not read_link or not problem_name:
         continue
@@ -47,14 +48,39 @@ for row in rows:
 
     if not url.startswith(("http://", "https://")):
         url = f"{base_url.rstrip('/')}/{url.lstrip('/')}"
+        
+    if not attachment:
+        save_path = os.path.join(output_dir, f"{name}.pdf")
+        directory = os.path.dirname(save_path)
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        
+        try:
+            print(f"Downloading PDF for {name}...")
+            downloader.download(url, cookies, save_path)
+        except Exception as e:
+            print(f"Failed to download PDF {name} from {url}: {e}")
+        continue
 
-    # save_path = f'{cedt'_'.join(name.split('_')[:2])}/{name}.pdf'
-    save_path = f'{output_dir}/{name}.pdf'
+    problem_dir = os.path.join(output_dir, name)
+    if not os.path.exists(problem_dir):
+        os.makedirs(problem_dir)
 
-    if not os.path.exists('/'.join(save_path.split('/')[:-1])):
-        os.makedirs('/'.join(save_path.split('/')[:-1]))
-
+    pdf_path = os.path.join(problem_dir, f"{name}.pdf")
     try:
-        downloader.download(url, cookies, save_path)
+        print(f"Downloading PDF for {name}...")
+        downloader.download(url, cookies, pdf_path)
     except Exception as e:
-        print(f"Failed to download {name} from {url}: {e}")
+        print(f"Failed to download PDF {name} from {url}: {e}")
+
+    file_url = attachment[0].get('href')
+    if file_url and not file_url.startswith(("http://", "https://")):
+        file_url = f"{base_url.rstrip('/')}/{file_url.lstrip('/')}"
+    
+    try:
+        print(f"Downloading attachment for {name}...")
+        actual_filename = downloader.file_download(file_url, cookies, problem_dir)
+        if actual_filename:
+            print(f"Successfully downloaded attachment: {actual_filename}")
+    except Exception as e:
+        print(f"Failed to download attachment for {name} from {file_url}: {e}")

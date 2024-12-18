@@ -1,6 +1,6 @@
 import os
 import requests
-
+import re
 
 def download(url, cookies, save_path):
 
@@ -15,12 +15,41 @@ def download(url, cookies, save_path):
         # Open a file in binary write mode and write the content
         with open(pdf_file_name, 'wb') as pdf_file:
             pdf_file.write(response.content)
-
-        print(f"PDF downloaded and saved as {pdf_file_name}")
     else:
         print(f"Failed to download the PDF file. Status code: {
               response.status_code}")
 
+def file_download(url, cookies, save_dir):
+    response = requests.get(url, cookies=cookies)
+
+    if response.status_code == 200:
+        filename = ''
+        if 'Content-Disposition' in response.headers:
+            content_disposition = response.headers['Content-Disposition']
+            
+            filename_match = re.search(r"filename\*=UTF-8''(.+?)($|;)", content_disposition)
+            if filename_match:
+                filename = filename_match.group(1)
+            else:
+                filename_match = re.search(r'filename="?([^";]+)', content_disposition)
+                if filename_match:
+                    filename = filename_match.group(1)
+
+        if not filename:
+            filename = os.path.basename(url)
+
+        filename = filename.strip('"').strip("'")
+        filename = requests.utils.unquote(filename)
+
+        save_path = os.path.join(save_dir, filename)
+
+        with open(save_path, 'wb') as file:
+            file.write(response.content)
+        
+        return filename
+    else:
+        print(f"Failed to download file. Status code: {response.status_code}")
+        return None
 
 if __name__ == '__main__':
 
