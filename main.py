@@ -11,6 +11,16 @@ cookies = {
 }
 
 output_dir = os.getenv('output_dir')
+major = os.getenv('major')
+base_url = ""
+if major == "ComProg":
+    base_url = "https://comprog.nattee.net"
+elif major == "CP" :
+    base_url = "https://grader.nattee.net"
+elif major == "CEDT":
+    base_url = "https://cedt-grader.nattee.net"
+elif major == "ISE":
+    base_url = "https://2190101.nattee.net"
 
 if not output_dir :
     output_dir='Data Struct & Algorithm'
@@ -20,9 +30,6 @@ with open('web.html') as f:
     root = etree.fromstring(html, parser=etree.HTMLParser())
 
 rows = root.xpath('//tr')
-# selected_element = root.xpath('//*[contains(text(), "Read")]')
-# selected_element_name = root.xpath(
-#     '//td/div[@class="text-muted font-monospace"]')
 
 for row in rows:
     read_link = row.xpath('.//a[contains(text(), "Read")]')
@@ -31,7 +38,6 @@ for row in rows:
     if not read_link or not problem_name:
         continue
     
-    base_url = "https://grader.nattee.net"  # for CPs
     url = read_link[0].get('href')
     name = problem_name[0].strip().replace('&ZeroWidthSpace;', '\u200b')
     
