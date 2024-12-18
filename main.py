@@ -19,22 +19,28 @@ with open('web.html') as f:
     html = f.read()
     root = etree.fromstring(html, parser=etree.HTMLParser())
 
-selected_element = root.xpath('//*[contains(text(), "Read")]')
-selected_element_name = root.xpath(
-    '//td/div[@class="text-muted font-monospace"]')
+rows = root.xpath('//tr')
+# selected_element = root.xpath('//*[contains(text(), "Read")]')
+# selected_element_name = root.xpath(
+#     '//td/div[@class="text-muted font-monospace"]')
 
-for l, v in zip(selected_element, selected_element_name):
+for row in rows:
+    read_link = row.xpath('.//a[contains(text(), "Read")]')
+    problem_name = row.xpath('.//div[@class="text-muted font-monospace"]/text()')
+    
+    if not read_link or not problem_name:
+        continue
+    
     base_url = "https://grader.nattee.net"  # for CPs
-    url = l.get('href')
+    url = read_link[0].get('href')
+    name = problem_name[0].strip().replace('&ZeroWidthSpace;', '\u200b')
     
     if not url:
-        print(f"Skipping {v.text.strip()}: URL is missing.")
+        print(f"Skipping {name}: URL is missing.")
         continue
 
     if not url.startswith(("http://", "https://")):
         url = f"{base_url.rstrip('/')}/{url.lstrip('/')}"
-        
-    name = v.text.strip().replace('&ZeroWidthSpace;', '\u200b')
 
     # save_path = f'{cedt'_'.join(name.split('_')[:2])}/{name}.pdf'
     save_path = f'{output_dir}/{name}.pdf'
