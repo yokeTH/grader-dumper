@@ -21,7 +21,7 @@ with open('web.html') as f:
 
 selected_element = root.xpath('//*[contains(text(), "Read")]')
 selected_element_name = root.xpath(
-    '//*[@id="main_table"]/tbody/tr/td[2]/strong')
+    '//td/div[@class="text-muted font-monospace"]')
 
 for l, v in zip(selected_element, selected_element_name):
     base_url = "https://grader.nattee.net"  # for CPs
@@ -34,7 +34,7 @@ for l, v in zip(selected_element, selected_element_name):
     if not url.startswith(("http://", "https://")):
         url = f"{base_url.rstrip('/')}/{url.lstrip('/')}"
         
-    name = v.text.strip()
+    name = v.text.strip().replace('&ZeroWidthSpace;', '\u200b')
 
     # save_path = f'{cedt'_'.join(name.split('_')[:2])}/{name}.pdf'
     save_path = f'{output_dir}/{name}.pdf'
