@@ -45,7 +45,7 @@ Dump all PDFs and attachments from Nattee's grader
 ## Output file structure
    - Save PDFs directly in output directory if no attachment
    - Create subdirectory with PDF and attachment if present
-  
+
    ```
    Data Structures & Algorithm
    ├── d57_​q0_​histogram.pdf      # no attachment
@@ -59,6 +59,8 @@ Dump all PDFs and attachments from Nattee's grader
 ## Notes
 
 - The cookies provided to this program are only valid for a short period of time. If you want to use the program again later, try running `main.py` with `python3 main.py`. If it doesn’t work, update the cookies in `.env` and try execute `source env/bin/activate` or simply run `./script.sh` again and enter new cookies.
+
+- Alternatively use [UV](https://docs.astral.sh/uv/) (recommended)
 
 ## Windows Users
 

@@ -20,13 +20,13 @@ def download(url, cookies, save_path):
               response.status_code}")
 
 def file_download(url, cookies, save_dir):
-    response = requests.get(url, cookies=cookies)
+    response = requests.get(url, cookies=cookies, verify=False)
 
     if response.status_code == 200:
         filename = ''
         if 'Content-Disposition' in response.headers:
             content_disposition = response.headers['Content-Disposition']
-            
+
             filename_match = re.search(r"filename\*=UTF-8''(.+?)($|;)", content_disposition)
             if filename_match:
                 filename = filename_match.group(1)
@@ -45,7 +45,7 @@ def file_download(url, cookies, save_dir):
 
         with open(save_path, 'wb') as file:
             file.write(response.content)
-        
+
         return filename
     else:
         print(f"Failed to download file. Status code: {response.status_code}")

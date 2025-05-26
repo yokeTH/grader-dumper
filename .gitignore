@@ -163,4 +163,15 @@ cython_debug/
 
 .env
 web.html
+
+.DS_Store
 Data Struct & Algorithm/
+# Devenv
+.devenv*
+devenv.local.nix
+
+# direnv
+.direnv
+
+# pre-commit
+.pre-commit-config.yaml
